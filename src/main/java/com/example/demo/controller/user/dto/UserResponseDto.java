@@ -11,10 +11,10 @@ public class UserResponseDto {
     private String name;
     private Integer age;
 
-    public static UserResponseDto of(User user) {
+    public static UserResponseDto of(User user, Boolean isShowAge) {
         return new UserResponseDto(
                 user.getName(),
-                user.getAge()
+                isShowAge ? user.getAge() : null
         );
     }
 }

@@ -13,10 +13,10 @@ public class UserDetailResponseDto {
     private String job;
     private String specialty;
 
-    public static UserDetailResponseDto of(User user) {
+    public static UserDetailResponseDto of(User user, Boolean isShowAge) {
         return new UserDetailResponseDto(
                 user.getName(),
-                user.getAge(),
+                isShowAge ? user.getAge() : null,
                 user.getJob(),
                 user.getSpecialty()
         );
