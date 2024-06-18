@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/user")
@@ -15,16 +16,27 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "")
-    public String userPage() {
+    public ModelAndView userPage() {
+        ModelAndView modelAndView = new ModelAndView();
         User user = userService.getExampleUser();
-        System.out.println(user);
-        return "/user/user";
+
+        modelAndView.addObject("name", user.getName());
+        modelAndView.addObject("age", user.getAge());
+
+        modelAndView.setViewName("/user/user");
+        return modelAndView;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/detail")
-    public String detailPage() {
+    public ModelAndView detailPage(ModelAndView modelAndView) {
         User user = userService.getExampleUser();
-        System.out.println(user);
-        return "/user/detail";
+
+        modelAndView.addObject("name", user.getName());
+        modelAndView.addObject("age", user.getAge());
+        modelAndView.addObject("job", user.getJob());
+        modelAndView.addObject("specialty", user.getSpecialty());
+
+        modelAndView.setViewName("/user/detail");
+        return modelAndView;
     }
 }
