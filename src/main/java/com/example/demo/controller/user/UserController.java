@@ -4,6 +4,7 @@ import com.example.demo.controller.user.dto.UserDetailResponseDto;
 import com.example.demo.controller.user.dto.UserResponseDto;
 import com.example.demo.service.user.User;
 import com.example.demo.service.user.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/{id}")
     public UserResponseDto userData(@PathVariable Integer id,
-                                    @RequestBody UserResponseOption option) {
+                                    @RequestBody @Valid UserResponseOption option) {
         User user = userService.getExampleUser(id);
 
         return UserResponseDto.of(user, option.getIsShowAge());
@@ -24,7 +25,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/{id}/detail")
     public UserDetailResponseDto detailData(@PathVariable Integer id,
-                                            @RequestBody UserResponseOption option) {
+                                            @RequestBody @Valid UserResponseOption option) {
         User user = userService.getExampleUser(id);
 
         return UserDetailResponseDto.of(user, option.getIsShowAge(), option.getIsShowSpecialty());
