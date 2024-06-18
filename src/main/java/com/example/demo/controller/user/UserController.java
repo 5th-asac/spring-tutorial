@@ -5,12 +5,11 @@ import com.example.demo.controller.user.dto.UserResponseDto;
 import com.example.demo.service.user.User;
 import com.example.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
 
@@ -18,7 +17,6 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "")
-    @ResponseBody
     public UserResponseDto userData() {
         User user = userService.getExampleUser();
 
@@ -26,7 +24,6 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/detail")
-    @ResponseBody
     public UserDetailResponseDto detailData() {
         User user = userService.getExampleUser();
 
