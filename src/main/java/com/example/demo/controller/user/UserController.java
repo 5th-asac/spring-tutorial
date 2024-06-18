@@ -1,12 +1,14 @@
 package com.example.demo.controller.user;
 
+import com.example.demo.controller.user.dto.UserDetailResponseDto;
+import com.example.demo.controller.user.dto.UserResponseDto;
 import com.example.demo.service.user.User;
 import com.example.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/user")
@@ -16,24 +18,18 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "")
-    public String userPage(Model model) {
+    @ResponseBody
+    public UserResponseDto userData() {
         User user = userService.getExampleUser();
 
-        model.addAttribute("name", user.getName());
-        model.addAttribute("age", user.getAge());
-
-        return "/user/user";
+        return UserResponseDto.of(user);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/detail")
-    public String detailPage(Model model) {
+    @ResponseBody
+    public UserDetailResponseDto detailData() {
         User user = userService.getExampleUser();
 
-        model.addAttribute("name", user.getName());
-        model.addAttribute("age", user.getAge());
-        model.addAttribute("job", user.getJob());
-        model.addAttribute("specialty", user.getSpecialty());
-
-        return "/user/detail";
+        return UserDetailResponseDto.of(user);
     }
 }
