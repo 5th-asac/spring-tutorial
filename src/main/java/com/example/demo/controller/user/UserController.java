@@ -16,17 +16,17 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public UserResponseDto userData(@PathVariable Integer id,
-                                    @RequestParam(required = false, defaultValue = "false") Boolean isShowAge) {
+                                    @ModelAttribute UserResponseOption option) {
         User user = userService.getExampleUser(id);
 
-        return UserResponseDto.of(user, isShowAge);
+        return UserResponseDto.of(user, option.getIsShowAge());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/detail")
     public UserDetailResponseDto detailData(@PathVariable Integer id,
-                                            @RequestParam(required = false, defaultValue = "false") Boolean isShowAge) {
+                                            @ModelAttribute UserResponseOption option) {
         User user = userService.getExampleUser(id);
 
-        return UserDetailResponseDto.of(user, isShowAge);
+        return UserDetailResponseDto.of(user, option.getIsShowAge(), option.getIsShowSpecialty());
     }
 }
