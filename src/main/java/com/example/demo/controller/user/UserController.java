@@ -14,17 +14,17 @@ public class UserController {
 
     private final UserService userService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    @RequestMapping(method = RequestMethod.POST, value = "/{id}")
     public UserResponseDto userData(@PathVariable Integer id,
-                                    @ModelAttribute UserResponseOption option) {
+                                    @RequestBody UserResponseOption option) {
         User user = userService.getExampleUser(id);
 
         return UserResponseDto.of(user, option.getIsShowAge());
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}/detail")
+    @RequestMapping(method = RequestMethod.POST, value = "/{id}/detail")
     public UserDetailResponseDto detailData(@PathVariable Integer id,
-                                            @ModelAttribute UserResponseOption option) {
+                                            @RequestBody UserResponseOption option) {
         User user = userService.getExampleUser(id);
 
         return UserDetailResponseDto.of(user, option.getIsShowAge(), option.getIsShowSpecialty());
