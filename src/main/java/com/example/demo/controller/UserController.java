@@ -17,7 +17,11 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> retrieve(@PathVariable Integer id) {
-        UserResponseDto response = userService.retrieve(id);
-        return ResponseEntity.ok(response);
+        try {
+            UserResponseDto response = userService.retrieve(id);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
