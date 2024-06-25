@@ -29,6 +29,10 @@ public class UserController {
             log.warn(e.getMessage());
             e.printStackTrace();
             return ResponseEntity.status(status).build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
         }
     }
 }
