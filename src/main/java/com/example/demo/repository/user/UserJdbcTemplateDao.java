@@ -80,14 +80,26 @@ public class UserJdbcTemplateDao {
         int getUserParams = updatedUserId;
         return this.jdbcTemplate.queryForObject(
                 getUserQuery,
-                (rs, rowNum) -> User.mappedBy(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getInt("age"),
-                        rs.getString("job"),
-                        rs.getString("specialty")
+                (resultSet, rowNum) -> User.mappedBy(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getInt("age"),
+                        resultSet.getString("job"),
+                        resultSet.getString("specialty")
                 ),
                 getUserParams
+        );
+    }
+
+    public int deleteUser(int userId) {
+        String deleteUserQuery = "DELETE FROM user WHERE id = ? ";
+        Object[] deleteUserParams = new Object[]{
+                userId
+        };
+
+        return this.jdbcTemplate.update(
+                deleteUserQuery,
+                deleteUserParams
         );
     }
 }

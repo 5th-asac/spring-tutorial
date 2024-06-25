@@ -31,4 +31,10 @@ public class UserController {
         UserResponseDto response = userService.update(id, request);
         return BaseResponse.success(response);
     }
+
+    @DeleteMapping("/{id}")
+    public BaseResponse update(@PathVariable Integer id) {
+        int deletedUserId = userService.delete(id);
+        return BaseResponse.success();
+    }
 }

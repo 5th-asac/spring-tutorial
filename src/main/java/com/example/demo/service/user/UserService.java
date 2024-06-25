@@ -27,4 +27,9 @@ public class UserService {
         User created = userRepository.updateUser(id, request);
         return UserResponseDto.of(created);
     }
+
+    public int delete(int id) {
+        int deletedUserId = userRepository.deleteUser(id);
+        return deletedUserId;
+    }
 }
