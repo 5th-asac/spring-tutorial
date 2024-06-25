@@ -3,6 +3,8 @@ package com.example.demo.repository.user;
 import com.example.demo.common.CustomException;
 import com.example.demo.common.ExceptionType;
 import com.example.demo.repository.user.entity.User;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -23,14 +25,25 @@ public class UserJdbcApiDao {
     @Value("${spring.datasource.password}")
     private String password;
 
+    @Value("${spring.datasource.driver-class-name}")
+    private String driver;
+
+    private DataSource dataSource() {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(url);
+        config.setUsername(username);
+        config.setPassword(password);
+        config.setDriverClassName(driver);
+        HikariDataSource hikariDataSource = new HikariDataSource(config);
+        return hikariDataSource;
+    }
+
     public User getUser(int userId) throws SQLException {
         Connection connection = null;   // 1
         Statement statement = null;     // 2
         ResultSet resultSet = null;     // 3
         try {
-            connection = DriverManager.getConnection(   // 1
-                    url, username, password
-            );
+            connection = dataSource().getConnection();  // 1
             statement = connection.createStatement();   // 2
             resultSet = statement.executeQuery(         // 3
                     "SELECT * FROM user WHERE id = " + userId
