@@ -5,6 +5,7 @@ import com.example.demo.controller.dto.UserResponseDto;
 import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,19 +25,10 @@ public class UserController {
             UserResponseDto response = userService.retrieve(id);
             return ResponseEntity.ok(response);
         } catch (CustomException e) {
-            if (e.getType().equals("INVALID_REQUEST")) {
-                log.warn(e.getMessage());
-                e.printStackTrace();
-                return ResponseEntity.badRequest().build();
-            } else if (e.getType().equals("NOT_EXIST")) {
-                log.warn(e.getMessage());
-                e.printStackTrace();
-                return ResponseEntity.notFound().build();
-            } else {
-                log.error(e.getMessage());
-                e.printStackTrace();
-                return ResponseEntity.internalServerError().build();
-            }
+            HttpStatus status = e.getType().getStatus();
+            log.warn(e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(status).build();
         }
     }
 }

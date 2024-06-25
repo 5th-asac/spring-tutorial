@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class CustomException extends RuntimeException {
-    private String type;
+    private ExceptionType type;
 
-    public CustomException(String type, String cause) {
+    public CustomException(ExceptionType type, String cause) {
         super(cause);
         this.type = type;
     }
