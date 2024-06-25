@@ -1,9 +1,11 @@
 package com.example.demo.service.user;
 
+import com.example.demo.common.CustomException;
+import com.example.demo.common.ExceptionType;
 import com.example.demo.controller.dto.UserCreateRequestDto;
 import com.example.demo.controller.dto.UserResponseDto;
 import com.example.demo.controller.dto.UserUpdateRequestDto;
-import com.example.demo.repository.user.UserJdbcTemplateDao;
+import com.example.demo.repository.user.UserRepository;
 import com.example.demo.repository.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,25 +13,29 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserJdbcTemplateDao userRepository;
+    private final UserRepository userRepository;
 
     public UserResponseDto retrieve(int id) {
-        User retrieved = userRepository.getUser(id);
+        User retrieved = userRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ExceptionType.NOT_EXIST, "유저 정보가 존재하지 않습니다 - id : " + id));
         return UserResponseDto.of(retrieved);
     }
 
     public UserResponseDto create(UserCreateRequestDto request) {
-        User created = userRepository.createUser(request);
+        User created = userRepository.save(request.toEntity());
         return UserResponseDto.of(created);
     }
 
     public UserResponseDto update(int id, UserUpdateRequestDto request) {
-        User created = userRepository.updateUser(id, request);
-        return UserResponseDto.of(created);
+        User retrieved = userRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ExceptionType.NOT_EXIST, "유저 정보가 존재하지 않습니다 - id : " + id));
+        retrieved.updateJob(request.getJob(), request.getSpecialty());
+        User updated = userRepository.save(retrieved);
+        return UserResponseDto.of(updated);
     }
 
     public int delete(int id) {
-        int deletedUserId = userRepository.deleteUser(id);
-        return deletedUserId;
+        userRepository.deleteById(id);
+        return id;
     }
 }

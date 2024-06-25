@@ -19,6 +19,15 @@ public class User {
     private String job;
     private String specialty;
 
+    public static User create(String name, Integer age) {
+        return new User(null, name, age, "Unemployed", "Empty");
+    }
+
+    public void updateJob(String job, String specialty) {
+        this.job = job;
+        this.specialty = specialty;
+    }
+
     public static User mappedBy(int id, String name, Integer age, String job, String specialty) {
         return new User(id, name, age, job, specialty);
     }
