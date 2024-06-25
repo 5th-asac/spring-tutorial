@@ -3,47 +3,26 @@ package com.example.demo.repository.user;
 import com.example.demo.common.CustomException;
 import com.example.demo.common.ExceptionType;
 import com.example.demo.repository.user.entity.User;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 @Repository
 @RequiredArgsConstructor
 public class UserJdbcApiDao {
-
-    @Value("${spring.datasource.url}")
-    private String url;
-
-    @Value("${spring.datasource.username}")
-    private String username;
-
-    @Value("${spring.datasource.password}")
-    private String password;
-
-    @Value("${spring.datasource.driver-class-name}")
-    private String driver;
-
-    private DataSource dataSource() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(url);
-        config.setUsername(username);
-        config.setPassword(password);
-        config.setDriverClassName(driver);
-        HikariDataSource hikariDataSource = new HikariDataSource(config);
-        return hikariDataSource;
-    }
+    private final DataSource dataSource;
 
     public User getUser(int userId) throws SQLException {
         Connection connection = null;   // 1
         Statement statement = null;     // 2
         ResultSet resultSet = null;     // 3
         try {
-            connection = dataSource().getConnection();  // 1
+            connection = dataSource.getConnection();    // 1
             statement = connection.createStatement();   // 2
             resultSet = statement.executeQuery(         // 3
                     "SELECT * FROM user WHERE id = " + userId
