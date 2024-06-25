@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -23,5 +24,21 @@ public class BaseResponse<T> {
 
     public static <T> BaseResponse<T> of(boolean success, int status, String error, T body) {
         return new BaseResponse<T>(success, status, error, body);
+    }
+
+    public static <T> BaseResponse<T> created() {
+        return BaseResponse.of(true, HttpStatus.CREATED.value(), null, null);
+    }
+
+    public static <T> BaseResponse<T> success() {
+        return BaseResponse.of(true, HttpStatus.NO_CONTENT.value(), null, null);
+    }
+
+    public static <T> BaseResponse<T> success(T body) {
+        return BaseResponse.of(true, HttpStatus.OK.value(), null, body);
+    }
+
+    public static <T> BaseResponse<T> failure(ExceptionType type) {
+        return BaseResponse.of(false, type.getStatus().value(), type.getMessage(), null);
     }
 }
