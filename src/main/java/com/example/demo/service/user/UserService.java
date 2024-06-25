@@ -2,6 +2,7 @@ package com.example.demo.service.user;
 
 import com.example.demo.common.CustomException;
 import com.example.demo.common.ExceptionType;
+import com.example.demo.controller.dto.UserCreateRequestDto;
 import com.example.demo.controller.dto.UserResponseDto;
 import org.springframework.stereotype.Service;
 
@@ -16,5 +17,10 @@ public class UserService {
         } else {
             throw new CustomException(ExceptionType.NOT_EXIST, "존재하지 않는 리소스입니다 - id : " + id);
         }
+    }
+
+    public UserResponseDto create(UserCreateRequestDto request) {
+        UserResponseDto created = new UserResponseDto(1, request.getName(), request.getAge(), "Unemployed", "Empty");
+        return created;
     }
 }
