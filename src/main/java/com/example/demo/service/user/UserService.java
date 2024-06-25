@@ -2,6 +2,7 @@ package com.example.demo.service.user;
 
 import com.example.demo.controller.dto.UserCreateRequestDto;
 import com.example.demo.controller.dto.UserResponseDto;
+import com.example.demo.controller.dto.UserUpdateRequestDto;
 import com.example.demo.repository.user.UserJdbcTemplateDao;
 import com.example.demo.repository.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,11 @@ public class UserService {
 
     public UserResponseDto create(UserCreateRequestDto request) {
         User created = userRepository.createUser(request);
+        return UserResponseDto.of(created);
+    }
+
+    public UserResponseDto update(int id, UserUpdateRequestDto request) {
+        User created = userRepository.updateUser(id, request);
         return UserResponseDto.of(created);
     }
 }
