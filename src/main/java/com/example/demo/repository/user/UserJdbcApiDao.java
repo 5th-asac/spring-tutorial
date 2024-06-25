@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,15 +18,16 @@ public class UserJdbcApiDao {
     private final DataSource dataSource;
 
     public User getUser(int userId) throws SQLException {
-        Connection connection = null;   // 1
-        Statement statement = null;     // 2
-        ResultSet resultSet = null;     // 3
+        Connection connection = null;           // 1
+        PreparedStatement statement = null;     // 2
+        ResultSet resultSet = null;             // 3
         try {
             connection = dataSource.getConnection();    // 1
-            statement = connection.createStatement();   // 2
-            resultSet = statement.executeQuery(         // 3
-                    "SELECT * FROM user WHERE id = " + userId
+            statement = connection.prepareStatement(    // 2
+                    "SELECT * FROM user WHERE id = ?"
             );
+            statement.setInt(1, userId);
+            resultSet = statement.executeQuery();       // 3
             if (resultSet.next()) {
                 return User.mappedBy(
                         resultSet.getInt("id"),
