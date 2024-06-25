@@ -4,16 +4,14 @@ import com.example.demo.common.BaseResponse;
 import com.example.demo.common.CustomException;
 import com.example.demo.common.ExceptionType;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 public class ExceptionAdvice {
 
     @ExceptionHandler
-    @ResponseBody
     public BaseResponse custom(CustomException e) {
         log.warn(e.getMessage());
         e.printStackTrace();
@@ -21,7 +19,6 @@ public class ExceptionAdvice {
     }
 
     @ExceptionHandler({ Exception.class })
-    @ResponseBody
     public BaseResponse custom(Exception e) {
         log.error(e.getMessage());
         e.printStackTrace();
