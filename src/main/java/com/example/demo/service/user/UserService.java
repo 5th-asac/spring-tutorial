@@ -1,22 +1,20 @@
 package com.example.demo.service.user;
 
-import com.example.demo.common.CustomException;
-import com.example.demo.common.ExceptionType;
 import com.example.demo.controller.dto.UserCreateRequestDto;
 import com.example.demo.controller.dto.UserResponseDto;
+import com.example.demo.repository.user.UserJdbcTemplateDao;
+import com.example.demo.repository.user.entity.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
+    private final UserJdbcTemplateDao userRepository;
 
     public UserResponseDto retrieve(int id) {
-        if (id == 1) {
-            return new UserResponseDto(1, "Aaron", 10, "Web Application Developer", "Backend");
-        } else if (id > 10) {
-            throw new CustomException(ExceptionType.INVALID_REQUEST, "아이디는 10을 넘을 수 없습니다 - id : " + id);
-        } else {
-            throw new CustomException(ExceptionType.NOT_EXIST, "존재하지 않는 리소스입니다 - id : " + id);
-        }
+        User retrieved = userRepository.getUser(id);
+        return UserResponseDto.of(retrieved);
     }
 
     public UserResponseDto create(UserCreateRequestDto request) {
