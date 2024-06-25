@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.common.CustomException;
 import com.example.demo.controller.dto.UserResponseDto;
 import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,20 @@ public class UserController {
         try {
             UserResponseDto response = userService.retrieve(id);
             return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            log.warn(e.getMessage());
-            e.printStackTrace();
-            return ResponseEntity.notFound().build();
+        } catch (CustomException e) {
+            if (e.getType().equals("INVALID_REQUEST")) {
+                log.warn(e.getMessage());
+                e.printStackTrace();
+                return ResponseEntity.badRequest().build();
+            } else if (e.getType().equals("NOT_EXIST")) {
+                log.warn(e.getMessage());
+                e.printStackTrace();
+                return ResponseEntity.notFound().build();
+            } else {
+                log.error(e.getMessage());
+                e.printStackTrace();
+                return ResponseEntity.internalServerError().build();
+            }
         }
     }
 }
