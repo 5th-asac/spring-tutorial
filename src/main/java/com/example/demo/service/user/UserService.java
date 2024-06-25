@@ -18,7 +18,7 @@ public class UserService {
     }
 
     public UserResponseDto create(UserCreateRequestDto request) {
-        UserResponseDto created = new UserResponseDto(1, request.getName(), request.getAge(), "Unemployed", "Empty");
-        return created;
+        User created = userRepository.createUser(request);
+        return UserResponseDto.of(created);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.repository.user;
 
+import com.example.demo.controller.dto.UserCreateRequestDto;
 import com.example.demo.repository.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,6 +14,41 @@ public class UserJdbcTemplateDao {
     public User getUser(int userId) {
         String getUserQuery = "SELECT * FROM user WHERE id = ?";
         int getUserParams = userId;
+        return this.jdbcTemplate.queryForObject(
+                getUserQuery,
+                (resultSet, rowNum) -> User.mappedBy(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getInt("age"),
+                        resultSet.getString("job"),
+                        resultSet.getString("specialty")
+                ),
+                getUserParams
+        );
+    }
+
+    public User createUser(UserCreateRequestDto request) {
+        // INSERT USER
+        String createUserQuery = "INSERT INTO user (name, age, job, specialty) VALUES (?, ?, ?, ?)";
+        Object[] createUserParams = new Object[]{
+                request.getName(),
+                request.getAge(),
+                "Unemployed",
+                "Empty",
+        };
+        this.jdbcTemplate.update(
+                createUserQuery,
+                createUserParams
+        );
+        // SELECT id
+        String lastInsertIdQuery = "SELECT last_insert_id()";
+        int createdUserId = this.jdbcTemplate.queryForObject(
+                lastInsertIdQuery,
+                int.class
+        );
+        // SELECT USER
+        String getUserQuery = "SELECT * FROM user WHERE id = ?";
+        int getUserParams = createdUserId;
         return this.jdbcTemplate.queryForObject(
                 getUserQuery,
                 (resultSet, rowNum) -> User.mappedBy(
