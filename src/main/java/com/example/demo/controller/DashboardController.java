@@ -3,13 +3,13 @@ package com.example.demo.controller;
 import com.example.demo.controller.dto.ProductDto;
 import com.example.demo.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -25,6 +25,7 @@ public class DashboardController {
         return "/index";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/product")
     @ResponseBody
     public ProductDto product() {

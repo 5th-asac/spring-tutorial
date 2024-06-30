@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.controller.dto.StatisticsDto;
 import com.example.demo.service.StatisticsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ public class BackofficeController {
         return "/backoffice/index";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/statistics")
     @ResponseBody
     public StatisticsDto statistics() {
