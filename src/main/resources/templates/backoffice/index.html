@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+</head>
+<body>
+    <h1>Admin</h1>
+    <div>특정 시간 기점으로 판매량 통계</div>
+    <div>- sales : <span th:text="${statistics.sales}"></span></div>
+    <div>- revenue : <span th:text="${statistics.revenue}"></span></div>
+    <div>- category : <span th:text="${statistics.category}"></span></div>
+</body>
+</html>
