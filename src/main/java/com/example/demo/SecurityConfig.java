@@ -26,6 +26,7 @@ import java.util.Arrays;
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final CorsConfigurationSource reactConfigurationSource;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,18 +40,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(request -> request.requestMatchers(new AntPathRequestMatcher("/*")).permitAll())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
-            .cors((cors) -> cors.configurationSource(reactConfigurationSource()));
+            .cors((cors) -> cors.configurationSource(reactConfigurationSource));
         return http.build();
-    }
-
-    private CorsConfigurationSource reactConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
     @Bean
