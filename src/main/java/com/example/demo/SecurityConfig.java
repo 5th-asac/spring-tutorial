@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -17,7 +18,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //        http.authorizeRequests(request -> request.anyRequest().authenticated())       // <  5.6
-        http.authorizeHttpRequests(request -> request.anyRequest().authenticated())     // >= 5.6
+//        http.authorizeHttpRequests(request -> request.anyRequest().authenticated())   // >= 5.6
+        /**
+         *  - 모든 경로 : anyRequest()
+         *  - 일부 경로 : requestMatchers(new AntPathRequestMatcher("/admin/**"))
+         */
+        http.authorizeHttpRequests(request -> request.requestMatchers(new AntPathRequestMatcher("/admin/**")).authenticated())
+            .authorizeHttpRequests(request -> request.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
