@@ -21,7 +21,7 @@ public class UserService {
     private final UserRepositorySupport userRepositorySupport;
 
     public List<UserResponseDto> retrieve(String name) {
-        List<User> retrieved = userRepositorySupport.findByName(name);
+        List<User> retrieved = userRepository.findByName(name);
         if (CollectionUtils.isEmpty(retrieved)) {
             new CustomException(ExceptionType.NOT_EXIST, "유저 정보가 존재하지 않습니다 - name : " + name);
         }
