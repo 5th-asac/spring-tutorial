@@ -16,7 +16,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests(request -> request.anyRequest().authenticated())
+//        http.authorizeRequests(request -> request.anyRequest().authenticated())       // <  5.6
+        http.authorizeHttpRequests(request -> request.anyRequest().authenticated())     // >= 5.6
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
