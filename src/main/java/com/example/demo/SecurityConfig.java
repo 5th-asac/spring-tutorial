@@ -30,7 +30,7 @@ public class SecurityConfig {
          *  - 모든 경로 : anyRequest()
          *  - 일부 경로 : requestMatchers(new AntPathRequestMatcher("/admin/**"))
          */
-        http.authorizeHttpRequests(request -> request.requestMatchers(new AntPathRequestMatcher("/admin/**")).authenticated())
+        http.authorizeHttpRequests(request -> request.requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN"))
             .authorizeHttpRequests(request -> request.requestMatchers(new AntPathRequestMatcher("/*")).permitAll())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
